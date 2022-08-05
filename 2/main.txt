@@ -1,0 +1,52 @@
+package com.example.myapplication2;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        View button = findViewById(R.id.button);
+        registerForContextMenu(button);
+    }
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo){
+        getMenuInflater().inflate(R.menu.menu,menu);
+        super.onCreateContextMenu(menu,v,menuInfo);
+    }
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item){
+        Toast.makeText(this, ""+item.getTitle(), Toast.LENGTH_SHORT).show();
+        AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle("Item selected")
+                .setMessage("Are you sure you want to continue?")
+                .setCancelable(false)
+                .setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Toast.makeText(MainActivity.this, "selected option:yes", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton("no", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Toast.makeText(MainActivity.this, "selected option:no", Toast.LENGTH_SHORT).show();
+                    }
+                });
+        AlertDialog dialog=builder.create();
+        dialog.show();
+        return super.onContextItemSelected(item);
+    }
+}
